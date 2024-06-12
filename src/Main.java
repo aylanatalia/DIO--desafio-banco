@@ -1,21 +1,27 @@
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        Banco banco = new Banco();
         Cliente ayla = new Cliente();
-        ayla.setNome("Ayla");
+		ayla.setNome("Ayla");
+		
+		Conta cc = new ContaCorrente(ayla);
+		Conta poupanca = new ContaPoupanca(ayla);
+        banco.adicionarConta(poupanca);
+        banco.adicionarConta(cc);
 
-        Cliente jocimari = new Cliente();
-        jocimari.setNome("Jocimari");
+        
+		cc.depositar(100);
+		cc.transferir(100, poupanca);
+		
+		((ContaCorrente) cc).imprimirExtrato();
+		((ContaPoupanca) poupanca).imprimirExtrato();
 
-        Conta cc = new ContaCorrente(ayla);
-        cc.depositar(150);
-
-        Conta poupanca = new ContaPoupanca(jocimari);
-        poupanca.depositar(240);
-
-        ((ContaCorrente) cc).imprimirExtrato();
-        ((ContaPoupanca) poupanca).imprimirExtrato();
-        poupanca.transferir(100, cc);
-
+        List<Conta> contasBanco = banco.getContasList();
+        System.out.println("Contas de banco: ");
+        for(Conta conta : contasBanco){
+            System.out.println(conta.getNumero() + "-" + conta.getCliente());
+        }
     }
 }
